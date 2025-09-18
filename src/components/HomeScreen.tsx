@@ -120,7 +120,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       <main className={`flex-1 max-w-6xl mx-auto p-3 w-full ${accessibilityMode ? 'overflow-y-auto' : ''}`}>
         {/* Main Options Grid */}
         {/* Main Options Grid */}
-<section className="bg-white rounded-xl shadow-md p-5 mb-3">
+<section className="bg-white rounded-xl shadow-md p-2 mb-1">
   <div className="grid grid-cols-2 gap-4">
     {mainOptions.map((option) => {
       const IconComponent = option.icon;
@@ -151,7 +151,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
         {/* Mic Section */}
         <section
           id="mic-section"
-          className="bg-white rounded-xl shadow-md p-1 mb-1 focus:outline-none"
+          className="bg-white rounded-xl shadow-md p-1 mb-0 focus:outline-none"
           tabIndex={0}
         >
           <div className="text-center">

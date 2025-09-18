@@ -68,46 +68,47 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex flex-col">
       {/* Header */}
-      <header className="bg-gradient-to-r from-green-700 to-green-800 text-white p-3">
+           {/* Header */}
+      <header className="bg-gradient-to-r from-green-700 to-green-800 text-white p-4 shadow-md">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center">
             <img
               src="https://upload.wikimedia.org/wikipedia/en/d/dd/Emblem_of_Goa_Police.png"
               alt="Goa Police Logo"
-              className="w-10 h-10 mr-2 rounded-full"
+              className="w-12 h-12 mr-3 rounded-full"
             />
             <div>
-              <h1 className={`font-bold ${accessibilityMode ? 'text-lg' : 'text-base'}`}>
+              <h1 className={`font-bold ${accessibilityMode ? 'text-2xl' : 'text-xl'}`}>
                 {t.goaPolice}
               </h1>
-              <p className={`text-green-200 ${accessibilityMode ? 'text-sm' : 'text-xs'}`}>
+              <p className={`text-green-200 ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
                 {t.aiVisitorAssistant}
               </p>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <button
               onClick={onToggleAccessibility}
-              className="bg-yellow-500 text-green-900 p-2 rounded-full hover:bg-yellow-400 transition-colors"
+              className="bg-yellow-500 text-green-900 p-3 rounded-full hover:bg-yellow-400 transition-colors"
               title="Toggle Accessibility"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-6 h-6" />
             </button>
 
             <button
               onClick={onPoliceDashboard}
-              className="bg-yellow-500 text-green-900 p-2 rounded-full hover:bg-yellow-400 transition-colors"
+              className="bg-yellow-500 text-green-900 p-3 rounded-full hover:bg-yellow-400 transition-colors"
               title="Police Dashboard"
             >
-              <Shield className="w-4 h-4" />
+              <Shield className="w-6 h-6" />
             </button>
 
             <button
               onClick={onBackToStart}
-              className="bg-yellow-500 text-green-900 px-2 py-1 rounded-full hover:bg-yellow-400 transition-colors text-xs"
+              className="bg-yellow-500 text-green-900 px-3 py-2 rounded-full hover:bg-yellow-400 transition-colors text-sm font-semibold"
             >
               {language === 'english' ? 'Exit' :
                 language === 'hindi' ? 'बाहर' : 'बाहेर'}

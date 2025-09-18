@@ -29,6 +29,7 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
   onComplete, 
   accessibilityMode 
 }) => {
+  const [step, setStep] = useState(1);
   const [complaintData, setComplaintData] = useState<WomenComplaintData>({
     type: '',
     name: '',
@@ -43,7 +44,7 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
   const [tokenNumber, setTokenNumber] = useState('');
   const t = translations[language];
 
-  const complaintTypes = [
+  const womenIssues = [
     { 
       id: 'domestic_violence', 
       name: language === 'english' ? 'Domestic Violence' : 
@@ -81,6 +82,12 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
       urgency: 'medium' as const
     },
     { 
+      id: 'eve_teasing', 
+      name: language === 'english' ? 'Eve Teasing' : 
+            language === 'hindi' ? 'छेड़छाड़' : 'छेडछाड',
+      urgency: 'medium' as const
+    },
+    { 
       id: 'other_women', 
       name: language === 'english' ? 'Other Women Safety Issues' : 
             language === 'hindi' ? 'अन्य महिला सुरक्षा मुद्दे' : 'हेर महिला सुरक्षा मुद्दे',
@@ -88,29 +95,20 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
     }
   ];
 
-  const handleInputChange = (field: keyof WomenComplaintData, value: string) => {
-    setComplaintData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleTypeSelect = (type: string, urgency: 'low' | 'medium' | 'high') => {
-    setComplaintData(prev => ({ ...prev, type, urgency }));
-  };
-
-  const handleSubmit = async () => {
-    if (!complaintData.type || !complaintData.name || !complaintData.phone || !complaintData.description) {
-      alert(language === 'english' ? 'Please fill all required fields' : 
-            language === 'hindi' ? 'कृपया सभी आवश्यक फ़ील्ड भरें' : 
-            'कृपया सगळे गरजेचे फील्ड भरा');
-      return;
+  const handleNext = () => {
+    if (step === 1 && complaintData.name && complaintData.type) {
+      const token = 'WO' + Math.random().toString().substr(2, 8).toUpperCase();
+      setTokenNumber(token);
+      saveWomenComplaintToDatabase(token);
+      generateReceipt(token, 'women_complaint', complaintData.name, language);
+      setStep(2);
     }
+  };
 
-    const token = 'WO' + Math.random().toString().substr(2, 8).toUpperCase();
-    setTokenNumber(token);
-
+  const saveWomenComplaintToDatabase = async (token: string) => {
     try {
-      // Save to database with women officer flag
       await complaintsService.create({
-        type: 'complaint',
+        type: 'women_complaint',
         token_number: token,
         complainant_name: complaintData.name,
         complainant_phone: complaintData.phone,
@@ -124,19 +122,20 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
         },
         status: 'pending'
       });
-
-      // Generate receipt in user's language
-      generateReceipt(token, 'complaint', complaintData.name, language);
-      setShowReceipt(true);
     } catch (error) {
       console.error('Error saving women complaint:', error);
-      // Still show success to user even if database fails
-      generateReceipt(token, 'complaint', complaintData.name, language);
-      setShowReceipt(true);
     }
   };
 
-  if (showReceipt) {
+  const handleInputChange = (field: keyof WomenComplaintData, value: string) => {
+    setComplaintData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleTypeSelect = (type: string, urgency: 'low' | 'medium' | 'high') => {
+    setComplaintData(prev => ({ ...prev, type, urgency }));
+  };
+
+  if (step === 2) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
@@ -145,9 +144,9 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
           </div>
           
           <h2 className={`font-bold text-gray-800 mb-4 ${accessibilityMode ? 'text-2xl' : 'text-xl'}`}>
-            {language === 'english' ? 'Complaint Filed Successfully!' : 
-             language === 'hindi' ? 'शिकायत सफलतापूर्वक दर्ज की गई!' : 
-             'शिकायत यशस्वीपणान दाखल जाली!'}
+            {language === 'english' ? 'Women Complaint Filed Successfully!' : 
+             language === 'hindi' ? 'महिला शिकायत सफलतापूर्वक दर्ज की गई!' : 
+             'महिला शिकायत यशस्वीपणान दाखल जाली!'}
           </h2>
           
           <div className="bg-pink-50 p-6 rounded-xl mb-6">
@@ -191,6 +190,14 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
                   {language === 'english' ? 'Domestic Violence: 181' : 
                    language === 'hindi' ? 'घरेलू हिंसा: 181' : 
                    'घरगुती हिंसा: 181'}
+                </span>
+              </div>
+              <div className="flex items-center justify-center">
+                <Phone className="w-4 h-4 text-pink-500 mr-2" />
+                <span className={`text-gray-700 ${accessibilityMode ? 'text-lg' : 'text-sm'}`}>
+                  {language === 'english' ? 'Child Helpline: 1098' : 
+                   language === 'hindi' ? 'बाल हेल्पलाइन: 1098' : 
+                   'बाल हेल्पलायन: 1098'}
                 </span>
               </div>
               <div className="flex items-center justify-center">
@@ -272,27 +279,53 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
             </div>
           </div>
 
-          {/* Complaint Type Selection */}
+          {/* Name Input */}
+          <div>
+            <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-xl' : 'text-lg'}`}>
+              {language === 'english' ? 'Enter Name *' : 
+               language === 'hindi' ? 'नाम दर्ज करें *' : 
+               'नांव घाला *'}
+            </label>
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={complaintData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className={`flex-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
+                  accessibilityMode ? 'p-4 text-lg' : 'p-3'
+                }`}
+                placeholder={language === 'english' ? 'Enter your name' : 
+                            language === 'hindi' ? 'अपना नाम दर्ज करें' : 
+                            'तुमचे नांव घाला'}
+              />
+              <VoiceInput
+                onTranscript={(text) => handleInputChange('name', text)}
+                language={language}
+              />
+            </div>
+          </div>
+
+          {/* Issue Type Selection */}
           <div>
             <label className={`block font-medium text-gray-700 mb-3 ${accessibilityMode ? 'text-xl' : 'text-lg'}`}>
-              {language === 'english' ? 'Type of Issue *' : 
-               language === 'hindi' ? 'समस्या का प्रकार *' : 
-               'समस्येचो प्रकार *'}
+              {language === 'english' ? 'Select Women Safety Issue *' : 
+               language === 'hindi' ? 'महिला सुरक्षा मुद्दा चुनें *' : 
+               'महिला सुरक्षा मुद्दा निवडा *'}
             </label>
             <div className="grid grid-cols-1 gap-3">
-              {complaintTypes.map((type) => (
+              {womenIssues.map((issue) => (
                 <button
-                  key={type.id}
-                  onClick={() => handleTypeSelect(type.id, type.urgency)}
+                  key={issue.id}
+                  onClick={() => handleTypeSelect(issue.id, issue.urgency)}
                   className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
-                    complaintData.type === type.id
+                    complaintData.type === issue.id
                       ? 'border-pink-500 bg-pink-50 text-pink-800'
                       : 'border-gray-200 hover:border-gray-300'
                   } ${accessibilityMode ? 'p-6 text-lg' : ''}`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium">{type.name}</span>
-                    {type.urgency === 'high' && (
+                    <span className="font-medium">{issue.name}</span>
+                    {issue.urgency === 'high' && (
                       <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
                         {language === 'english' ? 'High Priority' : 
                          language === 'hindi' ? 'उच्च प्राथमिकता' : 
@@ -305,165 +338,65 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
             </div>
           </div>
 
-          {/* Personal Information */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-lg' : ''}`}>
-                {language === 'english' ? 'Your Name *' : 
-                 language === 'hindi' ? 'आपका नाम *' : 
-                 'तुमचे नांव *'}
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={complaintData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className={`flex-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
-                    accessibilityMode ? 'p-4 text-lg' : 'p-3'
-                  }`}
-                  placeholder={language === 'english' ? 'Enter your name' : 
-                              language === 'hindi' ? 'अपना नाम दर्ज करें' : 
-                              'तुमचे नांव घाला'}
-                />
-                <VoiceInput
-                  onTranscript={(text) => handleInputChange('name', text)}
-                  language={language}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-lg' : ''}`}>
-                {language === 'english' ? 'Phone Number *' : 
-                 language === 'hindi' ? 'फोन नंबर *' : 
-                 'फोन नंबर *'}
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="tel"
-                  value={complaintData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className={`flex-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
-                    accessibilityMode ? 'p-4 text-lg' : 'p-3'
-                  }`}
-                  placeholder={language === 'english' ? 'Enter phone number' : 
-                              language === 'hindi' ? 'फोन नंबर दर्ज करें' : 
-                              'फोन नंबर घाला'}
-                />
-                <VoiceInput
-                  onTranscript={(text) => handleInputChange('phone', text)}
-                  language={language}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-lg' : ''}`}>
-              {language === 'english' ? 'Email Address' : 
-               language === 'hindi' ? 'ईमेल पता' : 
-               'ईमेल पत्ता'}
-            </label>
-            <div className="flex items-center space-x-2">
-              <input
-                type="email"
-                value={complaintData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`flex-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
-                  accessibilityMode ? 'p-4 text-lg' : 'p-3'
-                }`}
-                placeholder={language === 'english' ? 'Enter email address' : 
-                            language === 'hindi' ? 'ईमेल पता दर्ज करें' : 
-                            'ईमेल पत्ता घाला'}
-              />
-              <VoiceInput
-                onTranscript={(text) => handleInputChange('email', text)}
-                language={language}
-              />
-            </div>
-          </div>
-
-          {/* Incident Details */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-lg' : ''}`}>
-                {language === 'english' ? 'Date of Incident *' : 
-                 language === 'hindi' ? 'घटना की तारीख *' : 
-                 'घटनेची तारीख *'}
-              </label>
-              <input
-                type="date"
-                value={complaintData.date}
-                onChange={(e) => handleInputChange('date', e.target.value)}
-                className={`w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
-                  accessibilityMode ? 'p-4 text-lg' : 'p-3'
-                }`}
-              />
-            </div>
-
-            <div>
-              <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-lg' : ''}`}>
-                {language === 'english' ? 'Location *' : 
-                 language === 'hindi' ? 'स्थान *' : 
-                 'जागा *'}
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={complaintData.location}
-                  onChange={(e) => handleInputChange('location', e.target.value)}
-                  className={`flex-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
-                    accessibilityMode ? 'p-4 text-lg' : 'p-3'
-                  }`}
-                  placeholder={language === 'english' ? 'Enter location' : 
-                              language === 'hindi' ? 'स्थान दर्ज करें' : 
-                              'जागा घाला'}
-                />
-                <VoiceInput
-                  onTranscript={(text) => handleInputChange('location', text)}
-                  language={language}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label className={`block font-medium text-gray-700 mb-2 ${accessibilityMode ? 'text-lg' : ''}`}>
-              {language === 'english' ? 'Description of Incident *' : 
-               language === 'hindi' ? 'घटना का विवरण *' : 
-               'घटनेचे वर्णन *'}
-            </label>
-            <div className="flex items-start space-x-2">
-              <textarea
-                value={complaintData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                rows={accessibilityMode ? 6 : 4}
-                className={`flex-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 ${
-                  accessibilityMode ? 'p-4 text-lg' : 'p-3'
-                }`}
-                placeholder={language === 'english' ? 'Please describe the incident in detail. Your information will be kept confidential.' : 
-                            language === 'hindi' ? 'कृपया घटना का विस्तार से वर्णन करें। आपकी जानकारी गोपनीय रखी जाएगी।' : 
-                            'कृपया घटनेचे तपशीलवार वर्णन करा. तुमची माहिती गुप्त दवरली जातली.'}
-              />
-              <VoiceInput
-                onTranscript={(text) => handleInputChange('description', complaintData.description + ' ' + text)}
-                language={language}
-              />
-            </div>
-          </div>
-
           {/* Submit Button */}
           <button
-            onClick={handleSubmit}
-            disabled={!complaintData.type || !complaintData.name || !complaintData.phone || !complaintData.description}
+            onClick={handleNext}
+            disabled={!complaintData.name || !complaintData.type}
             className={`w-full bg-pink-600 text-white font-bold rounded-xl hover:bg-pink-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed ${
               accessibilityMode ? 'py-6 text-xl' : 'py-4 text-lg'
             }`}
           >
-            {language === 'english' ? 'Submit to Women Officer' : 
+            {language === 'english' ? 'SUBMIT TO WOMEN OFFICER' : 
              language === 'hindi' ? 'महिला अधिकारी को भेजें' : 
              'महिला अधिकाऱ्यांक पाठवा'}
           </button>
+
+          {/* Women Helpline Numbers */}
+          <div className="bg-gray-50 p-4 rounded-xl">
+            <h3 className={`font-bold text-gray-800 mb-3 ${accessibilityMode ? 'text-lg' : ''}`}>
+              {language === 'english' ? 'Women Helpline Numbers' : 
+               language === 'hindi' ? 'महिला हेल्पलाइन नंबर' : 
+               'महिला हेल्पलायन नंबर'}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="text-center">
+                <div className="bg-pink-500 text-white p-3 rounded-lg mb-2">
+                  <Phone className="w-6 h-6 mx-auto" />
+                </div>
+                <p className={`font-bold text-pink-600 ${accessibilityMode ? 'text-lg' : ''}`}>1091</p>
+                <p className={`text-gray-600 ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
+                  {language === 'english' ? 'Women Helpline' : language === 'hindi' ? 'महिला हेल्पलाइन' : 'महिला हेल्पलायन'}
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-red-500 text-white p-3 rounded-lg mb-2">
+                  <Phone className="w-6 h-6 mx-auto" />
+                </div>
+                <p className={`font-bold text-red-600 ${accessibilityMode ? 'text-lg' : ''}`}>181</p>
+                <p className={`text-gray-600 ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
+                  {language === 'english' ? 'Domestic Violence' : language === 'hindi' ? 'घरेलू हिंसा' : 'घरगुती हिंसा'}
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-blue-500 text-white p-3 rounded-lg mb-2">
+                  <Phone className="w-6 h-6 mx-auto" />
+                </div>
+                <p className={`font-bold text-blue-600 ${accessibilityMode ? 'text-lg' : ''}`}>1098</p>
+                <p className={`text-gray-600 ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
+                  {language === 'english' ? 'Child Helpline' : language === 'hindi' ? 'बाल हेल्पलाइन' : 'बाल हेल्पलायन'}
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-500 text-white p-3 rounded-lg mb-2">
+                  <Phone className="w-6 h-6 mx-auto" />
+                </div>
+                <p className={`font-bold text-green-600 ${accessibilityMode ? 'text-lg' : ''}`}>100</p>
+                <p className={`text-gray-600 ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
+                  {language === 'english' ? 'Police' : language === 'hindi' ? 'पुलिस' : 'पोलिस'}
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Confidentiality Notice */}
           <div className="bg-purple-50 p-4 rounded-xl">

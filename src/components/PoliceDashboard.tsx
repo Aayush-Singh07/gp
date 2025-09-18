@@ -140,13 +140,13 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className={`p-2 rounded-full ${getComplaintTypeColor(complaint.type)}`}>
-            {getComplaintTypeIcon(complaint.type)}
+            <Users className="w-5 h-5 text-red-600" />
           </div>
           <div>
-            <h3 className="font-semibold text-gray-800">{complaint.complainant_name}</h3>
+              {complaints.filter(c => c.type === 'women_complaint').length}
             <p className="text-sm text-gray-600">{getComplaintTypeName(complaint.type)}</p>
             <p className="text-xs text-gray-500">
-              {language === 'english' ? 'Token:' : language === 'hindi' ? 'टोकन:' : 'टोकन:'} {complaint.token_number}
+              {language === 'english' ? 'Women' : language === 'hindi' ? 'महिला' : 'महिला'}
             </p>
           </div>
         </div>
@@ -406,7 +406,7 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
               <Filter className="w-4 h-4 text-gray-500" />
               <select
                 value={filterType}
-                onChange={(e) => setFilterType(e.target.value as 'all' | 'complaint' | 'sos' | 'pcc' | 'women_complaint')}
+                onChange={(e) => setFilterType(e.target.value as 'all' | 'complaint' | 'pcc' | 'women_complaint')}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="all">
@@ -416,10 +416,6 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
                 <option value="complaint">
                   {language === 'english' ? 'File Complaint' : 
                    language === 'hindi' ? 'शिकायत दर्ज' : 'शिकायत दाखल'}
-                </option>
-                <option value="sos">
-                  {language === 'english' ? 'SOS Emergency' : 
-                   language === 'hindi' ? 'एसओएस आपातकाल' : 'एसओएस तातकाळ'}
                 </option>
                 <option value="pcc">
                   {language === 'english' ? 'PCC Application' : 

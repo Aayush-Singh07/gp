@@ -11,7 +11,7 @@ import WomenOfficerSection from './components/WomenOfficerSection';
 import FeedbackScreen from './components/FeedbackScreen';
 import { Language } from './types/language';
 
-type Screen = 'splash' | 'language' | 'home' | 'information' | 'report' | 'emergency' | 'translation' | 'police-dashboard' | 'women-officer' | 'feedback';
+type Screen = 'splash' | 'language' | 'home' | 'information' | 'report' | 'translation' | 'police-dashboard' | 'women-officer' | 'feedback';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('splash');
@@ -33,10 +33,6 @@ function App() {
   
   const handleFileReport = () => {
     setCurrentScreen('report');
-  };
-  
-  const handleEmergencyHelp = () => {
-    setCurrentScreen('emergency');
   };
   
   const handleTranslationAssistant = () => {
@@ -87,7 +83,6 @@ function App() {
           language={language}
           onGetInformation={handleGetInformation}
           onFileReport={handleFileReport}
-          onEmergencyHelp={handleEmergencyHelp}
           onTranslationAssistant={handleTranslationAssistant}
           onPoliceDashboard={handlePoliceDashboard}
           onWomenOfficerSection={handleWomenOfficerSection}
@@ -106,14 +101,6 @@ function App() {
       )}
       {currentScreen === 'report' && (
         <FileReport 
-          language={language}
-          onBack={handleBackToHome}
-          onComplete={handleShowFeedback}
-          accessibilityMode={accessibilityMode}
-        />
-      )}
-      {currentScreen === 'emergency' && (
-        <EmergencyHelp 
           language={language}
           onBack={handleBackToHome}
           onComplete={handleShowFeedback}

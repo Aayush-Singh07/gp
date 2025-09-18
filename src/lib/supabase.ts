@@ -28,7 +28,7 @@ export const supabase = createSupabaseClient();
 // Database types
 export interface Complaint {
   id: string;
-  type: 'complaint' | 'sos' | 'pcc';
+  type: 'complaint' | 'women_complaint' | 'pcc';
   token_number: string;
   complainant_name: string;
   complainant_phone: string;

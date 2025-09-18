@@ -50,22 +50,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       onClick: onFileReport
     },
     {
-      id: 'emergency',
-      title: t.emergencyHelp,
-      subtitle: t.emergencyHelpSubtitle,
-      icon: AlertTriangle,
-      bgColor: 'from-red-500 to-red-600',
-      onClick: onEmergencyHelp
-    },
-    {
-      id: 'translation',
-      title: t.translationAssistant,
-      subtitle: t.translationAssistantSubtitle,
-      icon: Languages,
-      bgColor: 'from-purple-500 to-purple-600',
-      onClick: onTranslationAssistant
-    },
-    {
       id: 'women-officer',
       title: language === 'english' ? 'Women Officer' : 
              language === 'hindi' ? 'महिला अधिकारी' : 'महिला अधिकारी',
@@ -75,6 +59,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       icon: Users,
       bgColor: 'from-pink-500 to-pink-600',
       onClick: onWomenOfficerSection
+    },
+    {
+      id: 'translation',
+      title: t.translationAssistant,
+      subtitle: t.translationAssistantSubtitle,
+      icon: Languages,
+      bgColor: 'from-purple-500 to-purple-600',
+      onClick: onTranslationAssistant
     }
   ];
 

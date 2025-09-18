@@ -1,6 +1,6 @@
 // HomeScreen.tsx
 import React, { useState } from 'react';
-import { Info, FileText, AlertTriangle, Languages, Mic, Shield, Settings } from 'lucide-react';
+import { Info, FileText, AlertTriangle, Languages, Mic, Shield, Settings, Users } from 'lucide-react';
 import { Language, translations } from '../types/language';
 import AIVoiceInterface from './AIVoiceInterface';
 
@@ -11,6 +11,7 @@ interface HomeScreenProps {
   onEmergencyHelp: () => void;
   onTranslationAssistant: () => void;
   onPoliceDashboard: () => void;
+  onWomenOfficerSection: () => void;
   onBackToStart: () => void;
   accessibilityMode: boolean;
   onToggleAccessibility: () => void;
@@ -23,6 +24,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   onEmergencyHelp,
   onTranslationAssistant,
   onPoliceDashboard,
+  onWomenOfficerSection,
   onBackToStart,
   accessibilityMode,
   onToggleAccessibility
@@ -62,6 +64,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       icon: Languages,
       bgColor: 'from-purple-500 to-purple-600',
       onClick: onTranslationAssistant
+    },
+    {
+      id: 'women-officer',
+      title: language === 'english' ? 'Women Officer' : 
+             language === 'hindi' ? 'महिला अधिकारी' : 'महिला अधिकारी',
+      subtitle: language === 'english' ? 'Safe space for women • महिलाओं के लिए सुरक्षित स्थान • महिलांखातीर सुरक्षित जागा' : 
+                language === 'hindi' ? 'महिलाओं के लिए सुरक्षित स्थान • Safe space for women • महिलांखातीर सुरक्षित जागा' : 
+                'महिलांखातीर सुरक्षित जागा • Safe space for women • महिलाओं के लिए सुरक्षित स्थान',
+      icon: Users,
+      bgColor: 'from-pink-500 to-pink-600',
+      onClick: onWomenOfficerSection
     }
   ];
 
@@ -121,24 +134,24 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
       <main className={`flex-1 max-w-6xl mx-auto p-3 w-full ${accessibilityMode ? 'overflow-y-auto' : ''}`}>
         {/* Main Options Grid */}
         {/* Main Options Grid */}
-<section className="bg-white rounded-xl shadow-md p-2 mb-1">
-  <div className="grid grid-cols-2 gap-4">
+<section className="bg-white rounded-xl shadow-md p-3 mb-1">
+  <div className="grid grid-cols-2 gap-3">
     {mainOptions.map((option) => {
       const IconComponent = option.icon;
       return (
         <button
           key={option.id}
           onClick={option.onClick}
-          className={`bg-gradient-to-br ${option.bgColor} p-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 ${accessibilityMode ? 'p-6' : ''}`}
+          className={`bg-gradient-to-br ${option.bgColor} p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 ${accessibilityMode ? 'p-5' : ''}`}
         >
           <div className="flex flex-col items-center text-center text-white">
-            <div className="p-3 rounded-full mb-3 bg-white bg-opacity-20">
-              <IconComponent className={`text-white ${accessibilityMode ? 'w-9 h-9' : 'w-7 h-7'}`} />
+            <div className="p-2 rounded-full mb-2 bg-white bg-opacity-20">
+              <IconComponent className={`text-white ${accessibilityMode ? 'w-8 h-8' : 'w-6 h-6'}`} />
             </div>
-            <h3 className={`font-bold mb-2 ${accessibilityMode ? 'text-lg' : 'text-base'}`}>
+            <h3 className={`font-bold mb-1 ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
               {option.title}
             </h3>
-            <p className={`opacity-90 leading-tight ${accessibilityMode ? 'text-base' : 'text-sm'}`}>
+            <p className={`opacity-90 leading-tight ${accessibilityMode ? 'text-sm' : 'text-xs'}`}>
               {option.subtitle}
             </p>
           </div>

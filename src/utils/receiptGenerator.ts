@@ -27,7 +27,8 @@ export const generateReceipt = (
   doc.setTextColor(0, 0, 0);
   const title = type === 'complaint' ? 'COMPLAINT RECEIPT' :
                 type === 'pcc' ? 'PCC APPLICATION RECEIPT' :
-                'SOS EMERGENCY RECEIPT';
+                type === 'sos' ? 'SOS EMERGENCY RECEIPT' :
+                'WOMEN OFFICER COMPLAINT RECEIPT';
   doc.text(title, 105, 50, { align: 'center' });
   
   // Receipt Box
@@ -57,7 +58,9 @@ export const generateReceipt = (
   // Type
   const typeText = type === 'complaint' ? t.fileComplaint :
                    type === 'pcc' ? t.pcc :
-                   type === 'sos' ? t.emergencyHelp : 'Unknown';
+                   type === 'sos' ? t.emergencyHelp : 
+                   language === 'english' ? 'Women Officer Section' : 
+                   language === 'hindi' ? 'महिला अधिकारी अनुभाग' : 'महिला अधिकारी विभाग';
   doc.text(`${language === 'english' ? 'Type:' : language === 'hindi' ? 'प्रकार:' : 'प्रकार:'} ${typeText}`, 30, yPosition);
   yPosition += 10;
   

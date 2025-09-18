@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Eye, FileText, AlertTriangle, Shield, Search, Filter, Edit, Check, X } from 'lucide-react';
+import { ArrowLeft, Eye, FileText, AlertTriangle, Shield, Search, Filter, Edit, Check, X, Users } from 'lucide-react';
 import { Language, translations } from '../types/language';
 import { complaintsService, Complaint } from '../lib/supabase';
 
@@ -64,6 +64,8 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
         return 'bg-red-100 border-red-500 text-red-800';
       case 'pcc':
         return 'bg-green-100 border-green-500 text-green-800';
+      case 'women_complaint':
+        return 'bg-pink-100 border-pink-500 text-pink-800';
       default:
         return 'bg-gray-100 border-gray-500 text-gray-800';
     }
@@ -79,6 +81,8 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
         return <Shield className="w-5 h-5" />;
       default:
         return <FileText className="w-5 h-5" />;
+      case 'women_complaint':
+        return <Users className="w-5 h-5" />;
     }
   };
 
@@ -93,6 +97,9 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
       case 'pcc':
         return language === 'english' ? 'PCC Application' : 
                language === 'hindi' ? 'पीसीसी आवेदन' : 'पीसीसी अर्ज';
+      case 'women_complaint':
+        return language === 'english' ? 'Women Officer Section' : 
+               language === 'hindi' ? 'महिला अधिकारी अनुभाग' : 'महिला अधिकारी विभाग';
       default:
         return type;
     }
@@ -361,6 +368,21 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
             </div>
           </div>
         </div>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="flex items-center">
+            <div className="bg-pink-100 p-2 rounded-full mr-3">
+              <Users className="w-5 h-5 text-pink-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-gray-800">
+                {complaints.filter(c => c.complaint_data?.category === 'women_safety').length}
+              </p>
+              <p className="text-sm text-gray-600">
+                {language === 'english' ? 'Women' : language === 'hindi' ? 'महिला' : 'महिला'}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="p-4">
@@ -384,7 +406,7 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
               <Filter className="w-4 h-4 text-gray-500" />
               <select
                 value={filterType}
-                onChange={(e) => setFilterType(e.target.value as any)}
+                onChange={(e) => setFilterType(e.target.value as 'all' | 'complaint' | 'sos' | 'pcc' | 'women_complaint')}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="all">
@@ -402,6 +424,10 @@ const PoliceDashboard: React.FC<PoliceDashboardProps> = ({ language, onBack }) =
                 <option value="pcc">
                   {language === 'english' ? 'PCC Application' : 
                    language === 'hindi' ? 'पीसीसी आवेदन' : 'पीसीसी अर्ज'}
+                </option>
+                <option value="women_complaint">
+                  {language === 'english' ? 'Women Officer Section' : 
+                   language === 'hindi' ? 'महिला अधिकारी अनुभाग' : 'महिला अधिकारी विभाग'}
                 </option>
               </select>
             </div>

@@ -391,7 +391,7 @@ const GetInformation: React.FC<GetInformationProps> = ({ language, onBack, acces
             <ArrowLeft className="w-6 h-6" />
           </button>
           <div className="flex items-center">
-            <Info className="w-8 h-8 mr-3" />
+            <FileText className="w-8 h-8 mr-3" />
             <div>
               <h1 className={`font-bold ${accessibilityMode ? 'text-xl' : 'text-lg'}`}>
                 {language === 'english' ? 'Get Information' : 

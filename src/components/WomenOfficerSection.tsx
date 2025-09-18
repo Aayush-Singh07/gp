@@ -97,7 +97,7 @@ const WomenOfficerSection: React.FC<WomenOfficerSectionProps> = ({
 
   const handleNext = () => {
     if (step === 1 && complaintData.name && complaintData.type) {
-      const token = 'WO' + Math.random().toString().substr(2, 8).toUpperCase();
+      const token = Math.floor(10 + Math.random() * 90).toString(); // 2-digit token
       setTokenNumber(token);
       saveWomenComplaintToDatabase(token);
       generateReceipt(token, 'women_complaint', complaintData.name, language);

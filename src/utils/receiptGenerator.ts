@@ -23,14 +23,14 @@ export const generateReceipt = (
   doc.text(t.aiVisitorAssistant, 105, 30, { align: 'center' });
   
   // Title
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.setTextColor(0, 0, 0);
   const title = type === 'complaint' ? 'COMPLAINT RECEIPT' :
                 type === 'pcc' ? 'PCC APPLICATION RECEIPT' :
                 'SOS EMERGENCY RECEIPT';
   doc.text(title, 105, 50, { align: 'center' });
   
-  // Receipt Box
+  // Receipt Box  
   doc.setDrawColor(25, 25, 112);
   doc.setLineWidth(2);
   doc.rect(20, 70, 170, 100);
@@ -39,7 +39,7 @@ export const generateReceipt = (
   doc.setFontSize(24);
   doc.setTextColor(25, 25, 112);
   doc.text('TOKEN NUMBER', 105, 90, { align: 'center' });
-  
+
   doc.setFontSize(32);
   doc.setTextColor(0, 0, 0);
   doc.text(tokenNumber, 105, 110, { align: 'center' });
@@ -57,7 +57,8 @@ export const generateReceipt = (
   // Type
   const typeText = type === 'complaint' ? t.fileComplaint :
                    type === 'pcc' ? t.pcc :
-                   type === 'sos' ? t.emergencyHelp : 'Unknown';
+                   type === 'women_complaint' ? (language === 'english' ? 'Women Complaint' : language === 'hindi' ? 'महिला शिकायत' : 'महिला शिकायत') :
+                   'Unknown';
   doc.text(`${language === 'english' ? 'Type:' : language === 'hindi' ? 'प्रकार:' : 'प्रकार:'} ${typeText}`, 30, yPosition);
   yPosition += 10;
   
@@ -88,6 +89,6 @@ export const generateReceipt = (
   doc.text('This is a computer-generated receipt. No signature is required.', 105, 280, { align: 'center' });
   doc.text(`${t.goaPolice} - ${t.aiVisitorAssistant}`, 105, 288, { align: 'center' });
   
-  // Save the PDF
+  // Save the PDF with 2-digit token
   doc.save(`Receipt_${tokenNumber}.pdf`);
 };

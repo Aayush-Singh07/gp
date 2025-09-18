@@ -1,13 +1,113 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goa Police AI Visitor Assistant - Complete Complaint Filing System</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goa Police Translation Interface</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-circle">GP</div>
+            </div>
+            <div class="header-text">
+                <h1>GOA POLICE</h1>
+                <p>Translation Interface</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interface -->
+    <main class="main-container">
+        <!-- Visitor Panel (Left) -->
+        <section class="panel visitor-panel" aria-label="Visitor Communication Panel">
+            <div class="panel-header">
+                <h2>
+                    <span class="icon">👤</span>
+                    <span class="label">Visitor / आगंतुक / भेट देवपी</span>
+                </h2>
+                <div class="language-indicator" id="visitorLang">
+                    <span class="lang-code">AUTO</span>
+                </div>
+            </div>
+            
+            <div class="transcript-area" id="visitorTranscript" aria-live="polite">
+                <div class="welcome-message">
+                    <p>Welcome! Start speaking to begin translation.</p>
+                    <p>स्वागत है! अनुवाद शुरू करने के लिए बोलना शुरू करें।</p>
+                    <p>स्वागत! भाषांतर सुरू करपाखातीर बोलप सुरू करा।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Center Mic Button -->
+        <div class="mic-container">
+            <button 
+                id="micButton" 
+                class="mic-button" 
+                aria-label="Press to start/stop recording"
+                title="Press Space or click to toggle microphone"
+            >
+                <div class="mic-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </div>
+                <div class="pulse-ring"></div>
+            </button>
+            
+            <div class="mic-status" id="micStatus">
+                <span class="status-text">Tap to speak</span>
+                <span class="status-subtext">टैप करके बोलें / टॅप करून बोला</span>
+            </div>
+        </div>
+
+        <!-- Officer Panel (Right) -->
+        <section class="panel officer-panel" aria-label="Officer Communication Panel">
+            <div class="panel-header">
+                <h2>
+                    <span class="icon">👮</span>
+                    <span class="label">Officer / अधिकारी / अधिकारी</span>
+                </h2>
+                <div class="language-indicator" id="officerLang">
+                    <span class="lang-code">EN</span>
+                </div>
+            </div>
+            
+            <div class="transcript-area" id="officerTranscript" aria-live="polite">
+                <div class="welcome-message">
+                    <p>Officer communication will appear here.</p>
+                    <p>अधिकारी संचार यहाँ दिखाई देगा।</p>
+                    <p>अधिकारी संवाद हांगा दिसतलो।</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="statusBar">
+        <div class="status-item">
+            <span class="status-label">Status:</span>
+            <span class="status-value" id="systemStatus">Ready</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Mode:</span>
+            <span class="status-value" id="currentMode">Offline</span>
+        </div>
+    </div>
+
+    <!-- Audio Elements for Feedback -->
+    <audio id="startBeep" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    <audio id="stopBeep" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm1" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
 </html>

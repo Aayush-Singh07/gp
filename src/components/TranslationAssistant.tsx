@@ -5,7 +5,7 @@ import { Language, translations } from '../types/language';
 interface TranslationAssistantProps {
   language: Language;
   onBack: () => void;
-  accessibilityMode: boolean;
+  accessibilityMode: boolean;  
 }
 
 interface Message {

@@ -3,7 +3,7 @@ import { Language, translations } from '../types/language';
 
 export const generateReceipt = (
   tokenNumber: string,
-  type: 'complaint' | 'pcc' | 'women_complaint',
+  type: 'complaint' | 'pcc' | 'sos',
   complainantName: string,
   language: Language
 ) => {
@@ -27,8 +27,7 @@ export const generateReceipt = (
   doc.setTextColor(0, 0, 0);
   const title = type === 'complaint' ? 'COMPLAINT RECEIPT' :
                 type === 'pcc' ? 'PCC APPLICATION RECEIPT' :
-                type === 'women_complaint' ? 'WOMEN COMPLAINT RECEIPT' :
-                'WOMEN OFFICER COMPLAINT RECEIPT';
+                'SOS EMERGENCY RECEIPT';
   doc.text(title, 105, 50, { align: 'center' });
   
   // Receipt Box
@@ -58,11 +57,7 @@ export const generateReceipt = (
   // Type
   const typeText = type === 'complaint' ? t.fileComplaint :
                    type === 'pcc' ? t.pcc :
-                   type === 'women_complaint' ? 
-                   (language === 'english' ? 'Women Officer Section' : 
-                    language === 'hindi' ? 'महिला अधिकारी अनुभाग' : 'महिला अधिकारी विभाग') :
-                   language === 'english' ? 'Women Officer Section' : 
-                   language === 'hindi' ? 'महिला अधिकारी अनुभाग' : 'महिला अधिकारी विभाग';
+                   type === 'sos' ? t.emergencyHelp : 'Unknown';
   doc.text(`${language === 'english' ? 'Type:' : language === 'hindi' ? 'प्रकार:' : 'प्रकार:'} ${typeText}`, 30, yPosition);
   yPosition += 10;
   

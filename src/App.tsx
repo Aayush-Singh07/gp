@@ -7,11 +7,10 @@ import FileReport from './components/FileReport';
 import EmergencyHelp from './components/EmergencyHelp';
 import TranslationAssistant from './components/TranslationAssistant';
 import PoliceDashboard from './components/PoliceDashboard';
-import WomenOfficerSection from './components/WomenOfficerSection';
 import FeedbackScreen from './components/FeedbackScreen';
 import { Language } from './types/language';
 
-type Screen = 'splash' | 'language' | 'home' | 'information' | 'report' | 'translation' | 'police-dashboard' | 'women-officer' | 'feedback';
+type Screen = 'splash' | 'language' | 'home' | 'information' | 'report' | 'emergency' | 'translation' | 'police-dashboard' | 'feedback';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('splash');
@@ -35,16 +34,16 @@ function App() {
     setCurrentScreen('report');
   };
   
+  const handleEmergencyHelp = () => {
+    setCurrentScreen('emergency');
+  };
+  
   const handleTranslationAssistant = () => {
     setCurrentScreen('translation');
   };
   
   const handlePoliceDashboard = () => {
     setCurrentScreen('police-dashboard');
-  };
-  
-  const handleWomenOfficerSection = () => {
-    setCurrentScreen('women-officer');
   };
   
   const handleBackToHome = () => {
@@ -83,9 +82,9 @@ function App() {
           language={language}
           onGetInformation={handleGetInformation}
           onFileReport={handleFileReport}
+          onEmergencyHelp={handleEmergencyHelp}
           onTranslationAssistant={handleTranslationAssistant}
           onPoliceDashboard={handlePoliceDashboard}
-          onWomenOfficerSection={handleWomenOfficerSection}
           onBackToStart={handleBackToStart}
           onShowFeedback={handleShowFeedback}
           accessibilityMode={accessibilityMode}
@@ -107,6 +106,14 @@ function App() {
           accessibilityMode={accessibilityMode}
         />
       )}
+      {currentScreen === 'emergency' && (
+        <EmergencyHelp 
+          language={language}
+          onBack={handleBackToHome}
+          onComplete={handleShowFeedback}
+          accessibilityMode={accessibilityMode}
+        />
+      )}
       {currentScreen === 'translation' && (
         <TranslationAssistant 
           language={language}
@@ -118,14 +125,6 @@ function App() {
         <PoliceDashboard 
           language={language}
           onBack={handleBackToHome}
-          accessibilityMode={accessibilityMode}
-        />
-      )}
-      {currentScreen === 'women-officer' && (
-        <WomenOfficerSection 
-          language={language}
-          onBack={handleBackToHome}
-          onComplete={handleShowFeedback}
           accessibilityMode={accessibilityMode}
         />
       )}

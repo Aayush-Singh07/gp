@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 // Create a dummy client if environment variables are not set
 const createSupabaseClient = () => {
@@ -9,18 +9,7 @@ const createSupabaseClient = () => {
     console.warn('Supabase environment variables not set. Using mock client.');
     return null;
   }
-  
-  try {
-    return createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false
-      }
-    });
-  } catch (error) {
-    console.error('Failed to create Supabase client:', error);
-    return null;
-  }
+  return createClient(supabaseUrl, supabaseAnonKey);
 };
 
 export const supabase = createSupabaseClient();
@@ -28,7 +17,7 @@ export const supabase = createSupabaseClient();
 // Database types
 export interface Complaint {
   id: string;
-  type: 'complaint' | 'women_complaint' | 'pcc';
+  type: 'complaint' | 'sos' | 'pcc';
   token_number: string;
   complainant_name: string;
   complainant_phone: string;
@@ -43,15 +32,9 @@ export interface Complaint {
 export const complaintsService = {
   // Create a new complaint
   async create(complaint: Omit<Complaint, 'id' | 'created_at' | 'updated_at'>) {
-    try {
     if (!supabase) {
       console.log('Mock: Creating complaint', complaint);
-        return { 
-          ...complaint, 
-          id: Math.random().toString(), 
-          created_at: new Date().toISOString(), 
-          updated_at: new Date().toISOString() 
-        };
+      return { ...complaint, id: Math.random().toString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
     }
     
     const { data, error } = await supabase
@@ -60,32 +43,12 @@ export const complaintsService = {
       .select()
       .single();
     
-      if (error) {
-        console.error('Supabase insert error:', error);
-        // Return mock data if database fails
-        return { 
-          ...complaint, 
-          id: Math.random().toString(), 
-          created_at: new Date().toISOString(), 
-          updated_at: new Date().toISOString() 
-        };
-      }
+    if (error) throw error;
     return data;
-    } catch (error) {
-      console.error('Error creating complaint:', error);
-      // Return mock data as fallback
-      return { 
-        ...complaint, 
-        id: Math.random().toString(), 
-        created_at: new Date().toISOString(), 
-        updated_at: new Date().toISOString() 
-      };
-    }
   },
 
   // Get all complaints
   async getAll() {
-    try {
     if (!supabase) {
       console.log('Mock: Getting all complaints');
       return [];
@@ -96,20 +59,12 @@ export const complaintsService = {
       .select('*')
       .order('created_at', { ascending: false });
     
-      if (error) {
-        console.error('Supabase select error:', error);
-        return [];
-      }
+    if (error) throw error;
     return data;
-    } catch (error) {
-      console.error('Error getting complaints:', error);
-      return [];
-    }
   },
 
   // Get complaint by ID
   async getById(id: string) {
-    try {
     if (!supabase) {
       console.log('Mock: Getting complaint by ID', id);
       return null;
@@ -121,20 +76,12 @@ export const complaintsService = {
       .eq('id', id)
       .single();
     
-      if (error) {
-        console.error('Supabase select by ID error:', error);
-        return null;
-      }
+    if (error) throw error;
     return data;
-    } catch (error) {
-      console.error('Error getting complaint by ID:', error);
-      return null;
-    }
   },
 
   // Update complaint status
   async updateStatus(id: string, status: Complaint['status']) {
-    try {
     if (!supabase) {
       console.log('Mock: Updating complaint status', id, status);
       return null;
@@ -147,14 +94,7 @@ export const complaintsService = {
       .select()
       .single();
     
-      if (error) {
-        console.error('Supabase update error:', error);
-        return null;
-      }
+    if (error) throw error;
     return data;
-    } catch (error) {
-      console.error('Error updating complaint status:', error);
-      return null;
-    }
   }
 };

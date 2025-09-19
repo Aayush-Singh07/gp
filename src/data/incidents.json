@@ -1,0 +1,102 @@
+[
+  {
+    "question": "My phone was stolen, what should I do?",
+    "category": "Mobile phone theft",
+    "answer": "Report at nearest police station. Provide IMEI, phone model, date/time, witnesses. Register FIR (BNS §303), forward IMEI to CEIR. Keep FIR for insurance."
+  },
+  {
+    "question": "I was scammed online via UPI, what to do?",
+    "category": "Cyber fraud",
+    "answer": "Register FIR (BNS §316, §317) at police station or online. Preserve all screenshots, chat logs, and transaction details. Forward complaint to Cyber Cell and bank for account freezing."
+  },
+  {
+    "question": "Someone broke into my house, how do I report?",
+    "category": "House burglary",
+    "answer": "File FIR (BNS §304) at police station. Provide date/time, entry point, stolen items list, and CCTV if available. Forensic team may inspect scene."
+  },
+  {
+    "question": "My wallet was snatched, what should I do?",
+    "category": "Pickpocketing/snatching",
+    "answer": "Report to nearest police station with time, location, and suspect description. Provide witness statements and CCTV if available. FIR (BNS §303) will be registered."
+  },
+  {
+    "question": "I lost my wallet/documents, whom should I inform?",
+    "category": "Lost & found items",
+    "answer": "File a diary entry or General Diary (GD) at the police station. Provide item description, location, and date. If found, police will return via Panchnama."
+  },
+  {
+    "question": "My neighbor is encroaching on my land, what can I do?",
+    "category": "Property disputes",
+    "answer": "For criminal trespass—register FIR (BNS §329, §331). For civil matters, approach SDM or civil court. Provide ownership documents, land maps, and evidence of encroachment."
+  },
+  {
+    "question": "My car/bike was stolen, how do I report?",
+    "category": "Vehicle theft",
+    "answer": "Register FIR (BNS §303) with vehicle details (make, model, registration, chassis/engine number), location, and time. Notify police control room and RTO for tracking and blacklisting."
+  },
+  {
+    "question": "I met with a minor road accident, what steps to follow?",
+    "category": "Minor road accidents",
+    "answer": "Report to nearest police station. Provide accident location, vehicle details, and witnesses. File FIR (BNS §281) if injury, take photos, and keep insurance/medical reports."
+  },
+  {
+    "question": "My spouse is abusing me, whom do I contact?",
+    "category": "Domestic violence/family disputes",
+    "answer": "Register FIR (BNS §85, §86) at nearest police station. Provide details of abuse, relationship with accused, and evidence. Police may refer to Protection Officer/Women Cell."
+  },
+  {
+    "question": "My child went missing, how to report?",
+    "category": "Missing persons",
+    "answer": "Register FIR (BNS §93, §94) immediately. Provide name, age, photo, last seen location, clothing, and identifying marks. Police will alert control room and upload details to TrackChild/NIC portal."
+  },
+  {
+    "question": "Someone entered my property illegally, what should I do?",
+    "category": "Trespassing/unlawful entry",
+    "answer": "Register FIR (BNS §329). Provide entry date/time, identity of trespasser, photos/videos, and witness statements. Police may issue notice and maintain peace under §151 BNSS."
+  },
+  {
+    "question": "I am being threatened, how to report?",
+    "category": "Threats/intimidation",
+    "answer": "Register FIR (BNS §351) at nearest police station. Provide details of threat, mode (verbal, written, digital), identity of accused, and evidence such as call recordings or messages. Refer to Cyber Cell if online."
+  },
+  {
+    "question": "I received a forged document, whom should I contact?",
+    "category": "Forgery/document tampering",
+    "answer": "Register FIR (BNS §336–339) at nearest police station. Provide type of document, suspected person, impact, and original/forged copies. Send for forensic analysis."
+  },
+  {
+    "question": "Neighbors are making loud noise, whom should I report?",
+    "category": "Noise/public nuisance",
+    "answer": "File a General Diary (BNS §268) at police station. Provide location, date/time, and video/audio evidence. Police may issue warning or challan, escalate to SDM if persistent."
+  },
+  {
+    "question": "My landlord is harassing me, whom do I contact?",
+    "category": "Tenant-landlord disputes",
+    "answer": "If criminal harassment—register FIR (BNS §329). For civil disputes, approach Rent Controller/SDM. Provide lease agreement, payment records, and legal notices."
+  },
+  {
+    "question": "Someone stole my bike from parking, how to proceed?",
+    "category": "Vehicle theft",
+    "answer": "Register FIR (BNS §303) with vehicle details, location, and time. Notify police control room and RTO for tracking and blacklisting."
+  },
+  {
+    "question": "I think my house was burgled last night.",
+    "category": "House burglary",
+    "answer": "File FIR (BNS §304) at police station. Provide date/time, entry point, stolen items list, and CCTV if available. Forensic team may inspect scene."
+  },
+  {
+    "question": "Someone tried to impersonate me online, what should I do?",
+    "category": "Cyber fraud",
+    "answer": "Register FIR (BNS §316, §317) at police station or online. Preserve all screenshots, chat logs, and transaction details. Forward complaint to Cyber Cell and social media platform for action."
+  },
+  {
+    "question": "I was pickpocketed in a crowded area, whom do I inform?",
+    "category": "Pickpocketing/snatching",
+    "answer": "Report to nearest police station with time, location, and suspect description. Provide witness statements and CCTV if available. FIR (BNS §303) will be registered."
+  },
+  {
+    "question": "I lost a bag, what is the procedure to recover it?",
+    "category": "Lost & found items",
+    "answer": "File a diary entry or General Diary (GD) at the police station. Provide item description, location, and date. If owner claims, police will return via Panchnama."
+  }
+]

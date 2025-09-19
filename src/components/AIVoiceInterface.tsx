@@ -34,6 +34,8 @@ const AIVoiceInterface: React.FC<AIVoiceInterfaceProps> = ({
       const langCode = language === 'english' ? 'en-US' : 
                       language === 'hindi' ? 'hi-IN' : 'hi-IN'; // Fallback to Hindi for Konkani
       recognitionRef.current.lang = langCode;
+  }
+  )
 
   // Use the new RAG Chatbot component
   return (
